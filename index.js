@@ -1,5 +1,6 @@
 'use strict';
 
-module.exports.merchant = require('./lib/merchant');
+module.exports.MerchantClass = require('./lib/merchant');
 
-module.exports.api = require('./lib/api');
+module.exports.ApiClass = require('./lib/api');
+module.exports.config = require('./config');
