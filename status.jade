@@ -1,0 +1,7 @@
+doctype html
+html(lang='en')
+    head
+        title success
+    body
+        #stripe-token-handler
+            | Success! TopUp !{order.amount / Math.pow(10, order.TariffPlan.Currency.precision)} !{order.TariffPlan.name}
