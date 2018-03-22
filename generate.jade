@@ -47,7 +47,7 @@ html(lang='en')
                 background-color: #43458b;
             }
             form {
-                padding: 30px;
+                padding: calc(50vh - 60px) 30px;
                 height: 120px;
             }
             label {
@@ -71,7 +71,8 @@ html(lang='en')
                 font-weight: 500;
             }
             .wrapper {
-                width: 670px;
+                min-width: 380px;
+                width: 100%;
                 margin: 0 auto;
                 height: 100%;
             }
@@ -123,7 +124,7 @@ html(lang='en')
             }
     body
         .wrapper
-            form#payment-form(action='/charge', method='post')
+            form#payment-form(action=url, method='post')
                 .form-row
                     label(for='card-element')
                         | Credit or debit card
@@ -137,7 +138,7 @@ html(lang='en')
             span.token
         script.
             // Create a Stripe client.
-            var stripe = Stripe('pk_test_dQOlIfOCFRoMpS36sh8FTe4B');
+            var stripe = Stripe('!{public_key}');
             // Create an instance of Elements.
             var elements = stripe.elements();
             // Custom styling can be passed to options when creating an Element.
