@@ -37,9 +37,9 @@ html(lang='en')
                 text-decoration: none;
                 -webkit-transition: all 150ms ease;
                 transition: all 150ms ease;
-                float: left;
-                margin-left: 12px;
-                margin-top: 28px;
+                margin-top: -15px;
+                min-width: 200px;
+                float: right;
             }
             button:hover {
                 transform: translateY(-1px);
@@ -62,8 +62,8 @@ html(lang='en')
                 color: #fa755a;
             }
             .form-row {
-                width: 70%;
-                float: left;
+                width: 100%;
+                /*float: left;*/
             }
             .token {
                 color: #32325d;
@@ -122,15 +122,19 @@ html(lang='en')
                 background-color: #fefde5 !important;
             }
     body
-        form#payment-form(action='/charge', method='post')
-            .form-row
-                label(for='card-element')
-                    | Credit or debit card
-                #card-element
-                    // A Stripe Element will be inserted here.
-                // Used to display form errors.
-                #card-errors(role='alert')
-            button Pay
+        .wrapper
+            form#payment-form(action='/charge', method='post')
+                .form-row
+                    label(for='card-element')
+                        | Credit or debit card
+                    #card-element
+                        // A Stripe Element will be inserted here.
+                    // Used to display form errors.
+                    #card-errors(role='alert')
+                button Pay
+        #stripe-token-handler.is-hidden
+            | Success! Got token:
+            span.token
         script.
             // Create a Stripe client.
             var stripe = Stripe('pk_test_dQOlIfOCFRoMpS36sh8FTe4B');
@@ -167,6 +171,26 @@ html(lang='en')
                     displayError.textContent = '';
                 }
             });
+            function stripeTokenHandler(token) {
+                // Insert the token ID into the form so it gets submitted to the server
+                var form = document.getElementById('payment-form');
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'stripeToken');
+                hiddenInput.setAttribute('value', token.id);
+                form.appendChild(hiddenInput);
+                successElement.className = '';
+                successElement.querySelector('.token').textContent = token.id;
+                // Submit the form
+                form.submit();
+            }
+            var successElement = document.getElementById('stripe-token-handler');
+            document.querySelector('.wrapper').addEventListener('click', function () {
+                successElement.className = 'is-hidden';
+            });
+
+            // Not in demo.
+
             // Handle form submission.
             var form = document.getElementById('payment-form');
             form.addEventListener('submit', function(event) {
@@ -178,7 +202,9 @@ html(lang='en')
                         errorElement.textContent = result.error.message;
                     } else {
                         // Send the token to your server.
-                        console.log(result.token);
+                        stripeTokenHandler(result.token);
                     }
                 });
             });
+
+
