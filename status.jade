@@ -1,7 +1,11 @@
 doctype html
 html(lang='en')
     head
+        meta(charset='utf-8')
         title success
+        style(type="text/css")
+            include style.css
     body
-        .info
-            | !{charge.outcome.seller_message} !{order.amount / Math.pow(10, order.TariffPlan.Currency.precision)} !{order.TariffPlan.Currency.name}
+        .token__payment-success
+            p.token__payment-message
+                | !{charge.outcome.seller_message} !{order.amount / Math.pow(10, order.TariffPlan.Currency.precision)} !{order.TariffPlan.Currency.name}
